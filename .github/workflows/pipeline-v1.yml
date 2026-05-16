@@ -7,22 +7,25 @@ on:
     paths:
       - 'src/**'
       - 'Dockerfile-Deploy.dockerfile'
-
+  workflow_dispatch:
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: 'Bước 1: Pulling code'
+      - name: 'Notify'
+        run: echo "Deploying"
+
+      - name: 'Pulling code'
         uses: actions/checkout@v4
 
-      - name: 'Bước 2: Build image'
+      - name: 'Build image'
         run: docker build -f Dockerfile-Deploy.dockerfile -t learn_devops:deploy .
 
-      - name: 'Thông báo lỗi'
+      - name: 'On failure'
         if: failure()
-        run: echo "Build failure! Có lỗi xảy ra trong quá trình build."
+        run: echo "Build failure!"
 
-      - name: 'Thông báo thành công'
+      - name: 'On success'
         if: success()
-        run: echo "Build success! Image đã được tạo ngon lành."
+        run: echo "Build success!"
