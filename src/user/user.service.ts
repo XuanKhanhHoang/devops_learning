@@ -11,9 +11,9 @@ export class UserService {
   constructor(
     @InjectRepository(User)
     private usersRepository: Repository<User>,
-    private readonly userCacheService: UserCacheService
+    private readonly userCacheService: UserCacheService,
   ) {}
-  
+
   list(dtos: any) {
     return this.usersRepository.find({});
   }
@@ -37,8 +37,10 @@ export class UserService {
   }
 
   async update(id: number, updateUserDto: UpdateUserDto) {
-    await this.userCacheService.clearUserList();
-    await this.userCacheService.clearUser(id);
+    await Promise.all([
+      this.userCacheService.clearUserList(),
+      this.userCacheService.clearUser(id),
+    ]);
     return this.usersRepository.update(id, updateUserDto);
   }
 
