@@ -1,0 +1,28 @@
+name: 'pipeline-v1'
+
+on:
+  push:
+    branches:
+      - deploy
+    paths:
+      - 'src/**'
+      - 'Dockerfile-Deploy.dockerfile'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 'Bước 1: Pulling code'
+        uses: actions/checkout@v4
+
+      - name: 'Bước 2: Build image'
+        run: docker build -f Dockerfile-Deploy.dockerfile -t learn_devops:deploy .
+
+      - name: 'Thông báo lỗi'
+        if: failure()
+        run: echo "Build failure! Có lỗi xảy ra trong quá trình build."
+
+      - name: 'Thông báo thành công'
+        if: success()
+        run: echo "Build success! Image đã được tạo ngon lành."
