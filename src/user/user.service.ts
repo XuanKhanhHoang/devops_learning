@@ -45,8 +45,10 @@ export class UserService {
   }
 
   async remove(id: number) {
-    await this.userCacheService.clearUserList();
-    await this.userCacheService.clearUser(id);
+    await Promise.all([
+      this.userCacheService.clearUserList(),
+      this.userCacheService.clearUser(id),
+    ]);
     return this.usersRepository.delete(id);
   }
 }
