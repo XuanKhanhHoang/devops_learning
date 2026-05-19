@@ -27,10 +27,10 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: 'Build image'
-        run: docker build -f Dockerfile-Deploy.dockerfile -t ${{ secrets.DOCKER_USERNAME }}/learn_devops:deploy .
+        run: docker build -f Dockerfile-Deploy.dockerfile -t ${{ secrets.DOCKER_USERNAME }}/devops:latest .
 
       - name: 'Push image to Docker Hub'
-        run: docker push ${{ secrets.DOCKER_USERNAME }}/learn_devops:deploy
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/devops:latest
 
       - name: 'On failure'
         if: failure()

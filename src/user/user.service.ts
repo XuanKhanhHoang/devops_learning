@@ -15,7 +15,7 @@ export class UserService {
   ) {}
 
   list(dtos: any) {
-    return this.usersRepository.find({});
+    return this.usersRepository.find({ ...dtos });
   }
 
   async create(createUserDto: CreateUserDto) {
