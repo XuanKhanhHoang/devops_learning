@@ -18,20 +18,22 @@ services:
     volumes:
       - db_data:/var/lib/postgresql/data
     profiles: ['infra']
-    # networks:
-    #   - backend_to_db
+    networks:
+      - backend_to_db
   backend:
-    image: devops:v2
+    image: xuankhanhhoang/devops:latest
     depends_on:
       db:
         condition: service_healthy
     ports:
       - '8080:8080'
     profiles: ['app']
-    # networks:
-    #   - backend_to_db
-    #   - backend_to_redis
-    #   - backend_to_internet
+    env_file:
+      - .env
+    networks:
+      - backend_to_db
+      - backend_to_redis
+      - backend_to_internet
   redis:
     image: redis:8.6.3-alpine
     ports:
@@ -40,19 +42,19 @@ services:
       - redis_data:/data
     profiles: ['infra']
     command: redis-server --requirepass ${REDIS_PASSWORD}
-    # networks:
-    #   - backend_to_redis
+    networks:
+      - backend_to_redis
 
 volumes:
   db_data:
   redis_data:
-# networks:
-# backend_to_redis:
-#   driver: bridge
-#   internal: true
-# backend_to_db:
-#   driver: bridge
-#   internal: true
-# backend_to_internet:
-# Mặc định là bridge
-# Mặc định là internal: false
+networks:
+  backend_to_redis:
+    driver: bridge
+    internal: true
+  backend_to_db:
+    driver: bridge
+    internal: true
+  backend_to_internet:
+# Default Settings is bridge
+# Default Settings internal: false
