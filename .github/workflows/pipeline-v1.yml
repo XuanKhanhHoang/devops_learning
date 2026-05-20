@@ -3,7 +3,7 @@ name: 'pipeline-v1'
 on:
   push:
     branches:
-      - deploy
+      - main
     paths:
       - 'src/**'
       - 'Dockerfile-Deploy.dockerfile'
